@@ -1,0 +1,42 @@
+import turtle
+
+t=turtle.Turtle()
+t.screen.bgcolor('white')
+#ini buat warna background
+t.pensize(4.7)
+#ini buat ketebalan batang atau tangkai
+t.color('green')
+#ini buat warna tangkai bawah
+t.left(90)
+#ini tangkainya dan bakal tegak 90 derajat
+t.backward(70) 
+#ini buat tangkainya biar pas di ujung
+t.speed(800)
+#ini buat speed biasa 
+t.shape('turtle')
+#ini buat bentuk bunganya
+
+def tree(i):
+    if i<10:
+    #ini buat seberapa banyak tangkai, semakin rendah maka semakin banyak        
+        return
+    else:
+        t.forward(i)
+        t.color('#FF8674')
+        #ini warna bunganya
+        t.circle(3.2)
+        #ini buat besar bulatan pinknya
+        t.color('green')
+        #ini buat warna tangkainya
+        t.left(30)
+        #bentuk pohon sebelah kiri
+        tree(3*i/4)
+        t.right(60)
+        #bentuk pohon sebelah kanan
+        tree(3*i/4)
+        t.left(30)
+        #ini bentuk pohon juga
+        t.backward(i)
+tree(80)        
+#ini untuk besar pohon
+turtle.done()
