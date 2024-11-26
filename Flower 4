@@ -1,0 +1,16 @@
+import turtle
+
+turtle.bgcolor("white")
+turtle.speed(50)
+turtle.hideturtle()
+
+Colors = ('#FF7F3F', '#FBDF07', '#89CFFD', '#F94892')
+
+for i in range(120):
+    for flow in Colors:
+        turtle.color(flow)
+        turtle.circle(200-i, 100)
+        turtle.lt(90)
+        turtle.circle(200-i, 100)
+        turtle.end_fill()
+turtle.mainloop()
