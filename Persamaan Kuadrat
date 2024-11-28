@@ -1,0 +1,30 @@
+import math
+
+def hitung_persamaan_kuadrat(a, b, c):
+    if a == 0:
+        return "Ini bukan persamaan kuadrat, karena a = 0."
+    
+    # Menghitung diskriminan
+    D = b**2 - 4*a*c
+    
+    # Menentukan solusi berdasarkan nilai diskriminan
+    if D > 0:
+        x1 = (-b + math.sqrt(D)) / (2 * a)
+        x2 = (-b - math.sqrt(D)) / (2 * a)
+        return f"Akar-akarnya adalah x1 = {x1:.2f} dan x2 = {x2:.2f}."
+    elif D == 0:
+        x = -b / (2 * a)
+        return f"Akar kembar, yaitu x = {x:.2f}."
+    else:
+        real_part = -b / (2 * a)
+        imag_part = math.sqrt(-D) / (2 * a)
+        return (f"Akar-akarnya adalah kompleks:\n"
+                f"x1 = {real_part:.2f} + {imag_part:.2f}i dan "
+                f"x2 = {real_part:.2f} - {imag_part:.2f}i.")
+    
+a = float(input("Masukkan nilai a: "))
+b = float(input("Masukkan nilai b: "))
+c = float(input("Masukkan nilai c: "))
+
+hasil = hitung_persamaan_kuadrat(a, b, c)
+print(hasil)
