@@ -1,0 +1,91 @@
+class Kasir:
+    def __init__(self):
+        self.daftar_barang = {
+            "Sabun": {"harga": 5000, "stok": 20},
+            "Sampo": {"harga": 15000, "stok": 15},
+            "Pasta Gigi": {"harga": 10000, "stok": 25},
+            "Tisu": {"harga": 8000, "stok": 30},
+            "Minyak Goreng": {"harga": 25000, "stok": 10},
+            "Beras": {"harga": 50000, "stok": 50},
+            "Mie Instan": {"harga": 3000, "stok": 100},
+            "Telur": {"harga": 2000, "stok": 200},
+            "Gula": {"harga": 12000, "stok": 20},
+            "Garam": {"harga": 5000, "stok": 30},
+            "Kopi": {"harga": 15000, "stok": 20},
+            "Teh": {"harga": 10000, "stok": 25},
+            "Kecap": {"harga": 8000, "stok": 15},
+            "Saos": {"harga": 9000, "stok": 20},
+            "Roti": {"harga": 7000, "stok": 50},
+            "Keju": {"harga": 25000, "stok": 10},
+            "Mentega": {"harga": 20000, "stok": 10},
+            "Coklat": {"harga": 15000, "stok": 20},
+            "Susu": {"harga": 20000, "stok": 30},
+            "Air Mineral": {"harga": 3000, "stok": 100},
+        }
+        self.keranjang = []
+
+    def tampilkan_barang(self):
+        print("\n=== Daftar Barang ===")
+        for i, (nama, info) in enumerate(self.daftar_barang.items(), start=1):
+            print(f"{i}. {nama} - Harga: Rp{info['harga']:,} - Stok: {info['stok']}")
+
+    def tambah_barang(self, nama, jumlah):
+        if nama in self.daftar_barang:
+            if self.daftar_barang[nama]["stok"] >= jumlah:
+                harga = self.daftar_barang[nama]["harga"]
+                self.keranjang.append({
+                    "nama": nama,
+                    "harga": harga,
+                    "jumlah": jumlah,
+                    "total": harga * jumlah
+                })
+                self.daftar_barang[nama]["stok"] -= jumlah
+                print(f"{nama} (x{jumlah}) berhasil ditambahkan ke keranjang.")
+            else:
+                print(f"Stok {nama} tidak mencukupi! Stok tersedia: {self.daftar_barang[nama]['stok']}.")
+        else:
+            print("Barang tidak ditemukan!")
+
+    def tampilkan_total(self):
+        total_harga = sum(item['total'] for item in self.keranjang)
+        print("\n=== Total Belanja ===")
+        for item in self.keranjang:
+            print(f"{item['nama']} (x{item['jumlah']}): Rp{item['total']:,}")
+        print(f"\nTotal: Rp{total_harga:,}")
+        return total_harga
+
+    def cetak_struk(self):
+        print("\n=== Struk Pembelian ===")
+        for item in self.keranjang:
+            print(f"{item['nama']} (x{item['jumlah']}): Rp{item['harga']:,} -> Rp{item['total']:,}")
+        total_harga = sum(item['total'] for item in self.keranjang)
+        print(f"\nTotal Belanja: Rp{total_harga:,}")
+        print("Terima kasih telah berbelanja!")
+
+def main():
+    kasir = Kasir()
+    while True:
+        print("\n=== Menu Kasir ===")
+        print("1. Lihat Daftar Barang")
+        print("2. Tambah Barang ke Keranjang")
+        print("3. Tampilkan Total")
+        print("4. Cetak Struk dan Keluar")
+        pilihan = input("Pilih menu (1/2/3/4): ")
+
+        if pilihan == "1":
+            kasir.tampilkan_barang()
+        elif pilihan == "2":
+            kasir.tampilkan_barang()
+            nama = input("Masukkan nama barang: ")
+            jumlah = int(input("Masukkan jumlah barang: "))
+            kasir.tambah_barang(nama, jumlah)
+        elif pilihan == "3":
+            kasir.tampilkan_total()
+        elif pilihan == "4":
+            kasir.cetak_struk()
+            break
+        else:
+            print("Pilihan tidak valid, silakan coba lagi.")
+
+if __name__ == "__main__":
+    main()
