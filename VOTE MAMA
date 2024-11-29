@@ -1,0 +1,112 @@
+artists = [
+    "BTS", "Blackpink", "Stray Kids", "Seventeen", "EXO",
+    "TWICE", "Red Velvet", "ITZY", "NCT 127", "TXT",
+    "IVE", "NewJeans", "ENHYPEN", "ATEEZ", "Kep1er",
+    "LE SSERAFIM", "Mamamoo", "aespa", "TREASURE", "SHINee",
+    "Illit", "VIVIZ", "NMIXX", "IU", "MEOVV"
+]
+
+# Data untuk menyimpan skor setiap artis
+scores = {artist: {"votes": 0, "album_sales": 0, "radio_popularity": 0} for artist in artists}
+
+def show_menu():
+    print("\n===== Voting MAMA 2024 ======")
+    print("1. Vote artis")
+    print("2. Tambahkan data penjualan album")
+    print("3. Tambahkan data popularitas radio")
+    print("4. Tampilkan hasil sementara")
+    print("5. Keluar")
+
+def vote():
+    print("\nPilih artis favorit Anda untuk voting:")
+    for i, artist in enumerate(artists, start=1):
+        print(f"{i}. {artist}")
+    try:
+        choice = int(input("Masukkan nomor artis pilihan Anda: "))
+        if 1 <= choice <= len(artists):
+            selected_artist = artists[choice - 1]
+            scores[selected_artist]["votes"] += 1
+            print(f"Terima kasih telah memilih {selected_artist}!")
+        else:
+            print("Pilihan tidak valid.")
+    except ValueError:
+        print("Masukkan nomor yang valid.")
+
+def add_album_sales():
+    print("\nTambahkan data penjualan album:")
+    for i, artist in enumerate(artists, start=1):
+        print(f"{i}. {artist}")
+    try:
+        choice = int(input("Masukkan nomor artis: "))
+        if 1 <= choice <= len(artists):
+            selected_artist = artists[choice - 1]
+            sales = int(input(f"Masukkan jumlah penjualan album untuk {selected_artist}: "))
+            scores[selected_artist]["album_sales"] += sales
+            print(f"Data penjualan album {selected_artist} telah diperbarui!")
+        else:
+            print("Pilihan tidak valid.")
+    except ValueError:
+        print("Masukkan data yang valid.")
+
+def add_radio_popularity():
+    print("\nTambahkan data popularitas radio:")
+    for i, artist in enumerate(artists, start=1):
+        print(f"{i}. {artist}")
+    try:
+        choice = int(input("Masukkan nomor artis: "))
+        if 1 <= choice <= len(artists):
+            selected_artist = artists[choice - 1]
+            popularity = int(input(f"Masukkan skor popularitas radio untuk {selected_artist} (0-100): "))
+            if 0 <= popularity <= 100:
+                scores[selected_artist]["radio_popularity"] += popularity
+                print(f"Data popularitas radio {selected_artist} telah diperbarui!")
+            else:
+                print("Skor harus dalam rentang 0-100.")
+        else:
+            print("Pilihan tidak valid.")
+    except ValueError:
+        print("Masukkan data yang valid.")
+
+def calculate_total_score(artist_data):
+    # Bobot untuk setiap kategori (dapat disesuaikan)
+    vote_weight = 0.5
+    album_sales_weight = 0.3
+    radio_popularity_weight = 0.2
+
+    total_score = (
+        artist_data["votes"] * vote_weight +
+        artist_data["album_sales"] * album_sales_weight +
+        artist_data["radio_popularity"] * radio_popularity_weight
+    )
+    return total_score
+
+def show_results():
+    print("\n=== Hasil Sementara ===")
+    results = [
+        (artist, calculate_total_score(data)) for artist, data in scores.items()
+    ]
+    # Urutkan berdasarkan skor total
+    results.sort(key=lambda x: x[1], reverse=True)
+    for rank, (artist, total_score) in enumerate(results, start=1):
+        print(f"{rank}. {artist} - Skor total: {total_score:.2f}")
+
+def main():
+    while True:
+        show_menu()
+        choice = input("Pilih menu: ")
+        if choice == "1":
+            vote()
+        elif choice == "2":
+            add_album_sales()
+        elif choice == "3":
+            add_radio_popularity()
+        elif choice == "4":
+            show_results()
+        elif choice == "5":
+            print("Terima kasih telah menggunakan sistem voting ini!")
+            break
+        else:
+            print("Pilihan tidak valid.")
+
+if __name__ == "__main__":
+    main()
