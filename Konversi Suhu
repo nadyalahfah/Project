@@ -1,0 +1,40 @@
+def convert_temperature():
+    print("Program Konversi Suhu")
+    print("----------------------")
+    print("Pilih jenis konversi:")
+    print("1. Celsius ke Fahrenheit")
+    print("2. Celsius ke Kelvin")
+    print("3. Fahrenheit ke Celsius")
+    print("4. Fahrenheit ke Kelvin")
+    print("5. Kelvin ke Celsius")
+    print("6. Kelvin ke Fahrenheit")
+    
+    choice = input("Masukkan pilihan (1/2/3/4/5/6): ")
+    try:
+        if choice in ["1", "2", "3", "4", "5", "6"]:
+            temperature = float(input("Masukkan suhu: "))
+            
+            if choice == "1":  # Celsius ke Fahrenheit
+                result = (temperature * 9/5) + 32
+                print(f"{temperature}°C = {result:.2f}°F")
+            elif choice == "2":  # Celsius ke Kelvin
+                result = temperature + 273.15
+                print(f"{temperature}°C = {result:.2f} K")
+            elif choice == "3":  # Fahrenheit ke Celsius
+                result = (temperature - 32) * 5/9
+                print(f"{temperature}°F = {result:.2f}°C")
+            elif choice == "4":  # Fahrenheit ke Kelvin
+                result = (temperature - 32) * 5/9 + 273.15
+                print(f"{temperature}°F = {result:.2f} K")
+            elif choice == "5":  # Kelvin ke Celsius
+                result = temperature - 273.15
+                print(f"{temperature} K = {result:.2f}°C")
+            elif choice == "6":  # Kelvin ke Fahrenheit
+                result = (temperature - 273.15) * 9/5 + 32
+                print(f"{temperature} K = {result:.2f}°F")
+        else:
+            print("Pilihan tidak valid.")
+    except ValueError:
+        print("Input suhu harus berupa angka.")
+
+convert_temperature()
