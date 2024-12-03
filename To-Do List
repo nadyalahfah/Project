@@ -1,0 +1,97 @@
+def main():
+    to_do_list = []
+
+    def add_task():
+        title = input("Masukkan judul tugas: ")
+        category = input("Masukkan kategori (Kuliah/Organisasi/Pribadi): ")
+        priority = input("Masukkan prioritas (Tinggi/Sedang/Rendah): ")
+        to_do_list.append({
+            "title": title,
+            "category": category,
+            "priority": priority,
+            "completed": False
+        })
+        print("Yeay! Tugas berhasil ditambahkan.")
+
+    def view_tasks():
+        if not to_do_list:
+            print("Tidak ada tugas yang tersimpan.")
+            return
+        print("\nDaftar Tugas:")
+        for i, task in enumerate(to_do_list, 1):
+            status = "✓ Selesai" if task["completed"] else "✗ Belum Selesai"
+            print(f"{i}. [{status}] {task['title']} - {task['category']} (Prioritas: {task['priority']})")
+
+    def mark_task_completed():
+        view_tasks()
+        if not to_do_list:
+            return
+        task_no = int(input("Masukkan nomor tugas yang selesai: "))
+        if 0 < task_no <= len(to_do_list):
+            to_do_list[task_no - 1]["completed"] = True
+            print("Tugas berhasil ditandai sebagai selesai.")
+        else:
+            print("Nomor tugas tidak valid.")
+
+    def delete_task():
+        view_tasks()
+        if not to_do_list:
+            return
+        task_no = int(input("Masukkan nomor tugas yang ingin dihapus: "))
+        if 0 < task_no <= len(to_do_list):
+            to_do_list.pop(task_no - 1)
+            print("Tugas berhasil dihapus.")
+        else:
+            print("Nomor tugas tidak valid.")
+
+    def filter_tasks():
+        print("\nFilter berdasarkan:")
+        print("1. Kategori")
+        print("2. Prioritas")
+        choice = input("Masukkan pilihan (1/2): ")
+        if choice == "1":
+            category = input("Masukkan kategori (Kuliah/Organisasi/Pribadi): ")
+            filtered = [task for task in to_do_list if task["category"].lower() == category.lower()]
+        elif choice == "2":
+            priority = input("Masukkan prioritas (Tinggi/Sedang/Rendah): ")
+            filtered = [task for task in to_do_list if task["priority"].lower() == priority.lower()]
+        else:
+            print("Pilihan tidak valid.")
+            return
+        
+        if filtered:
+            print("\nTugas yang difilter:")
+            for i, task in enumerate(filtered, 1):
+                status = "✓ Selesai" if task["completed"] else "✗ Belum Selesai"
+                print(f"{i}. [{status}] {task['title']} - {task['category']} (Prioritas: {task['priority']})")
+        else:
+            print("Tidak ada tugas yang sesuai dengan filter.")
+
+    while True:
+        print("\n--- To-Do List Nadya ---")
+        print("1. Tambah Tugas")
+        print("2. Lihat Semua Tugas")
+        print("3. Tandai Tugas Selesai")
+        print("4. Hapus Tugas")
+        print("5. Filter Tugas")
+        print("6. Keluar")
+        choice = input("Masukkan pilihan (1/2/3/4/5/6): ")
+
+        if choice == "1":
+            add_task()
+        elif choice == "2":
+            view_tasks()
+        elif choice == "3":
+            mark_task_completed()
+        elif choice == "4":
+            delete_task()
+        elif choice == "5":
+            filter_tasks()
+        elif choice == "6":
+            print("Semangat! Semoga harimu produktif, Nad!")
+            break
+        else:
+            print("Pilihan tidak valid, coba lagi.")
+
+if __name__ == "__main__":
+    main()
