@@ -1,0 +1,111 @@
+import random
+
+def timer(func):
+    def wrapper(*args, **kwargs):
+        import time
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        print(f"Execution Time: {time.time() - start_time:.4f} seconds")
+        return result
+    return wrapper
+
+def generate_sequence(length=5):
+    sequence = [random.randint(1, 100) for _ in range(length)]
+    sequence = sorted(sequence)
+    return sequence
+
+def validate_guess(guess, sequence):
+    if guess == sequence[0]:
+        print("Tebakanmu benar! Itu adalah angka pertama.")
+        return True
+    else:
+        print("Tebakanmu salah.")
+        return False
+
+def give_clue_with_math(sequence):
+    math_operations = ['+', '-', '*', '/', '%']
+    operation = random.choice(math_operations)
+    
+    if operation == '+':
+        a, b = random.randint(1, 50), random.randint(1, 50)
+        correct_answer = a + b
+        question = f"Apa hasil dari {a} + {b}?"
+    elif operation == '-':
+        a, b = random.randint(1, 50), random.randint(1, 50)
+        correct_answer = a - b
+        question = f"Apa hasil dari {a} - {b}?"
+    elif operation == '*':
+        a, b = random.randint(1, 20), random.randint(1, 20)
+        correct_answer = a * b
+        question = f"Apa hasil dari {a} * {b}?"
+    elif operation == '/':
+        a, b = random.randint(1, 100), random.randint(1, 20)
+        correct_answer = a // b  # Pembagian bulat
+        question = f"Apa hasil dari {a} / {b}?"
+    elif operation == '%':
+        a, b = random.randint(1, 100), random.randint(1, 20)
+        correct_answer = a % b
+        question = f"Apa sisa bagi dari {a} % {b}?"
+
+    print(question)
+    
+    user_answer = int(input("Jawabanmu: "))
+    
+    if user_answer == correct_answer:
+        print("Jawabanmu benar! Sekarang, kamu akan mendapatkan petunjuk.")
+        clue_choice = random.choice(['first', 'last'])
+        if clue_choice == 'first':
+            print(f"Clue: Angka pertama dalam urutan terurut adalah {sequence[0]}")
+        else:
+            print(f"Clue: Angka terakhir dalam urutan terurut adalah {sequence[-1]}")
+    else:
+        print("Jawabanmu salah.")
+        retry = input("Apakah kamu ingin mengulang pertanyaan matematika? (ketik 'ya' atau 'tidak'): ").strip().lower()
+        if retry == 'ya':
+            give_clue_with_math(sequence)  # Mengulang soal matematika jika salah
+        else:
+            print("Baik, langsung masukkan tebakanmu.")
+            guess = int(input("Masukkan tebakanmu: "))
+            if validate_guess(guess, sequence):
+                print("Selamat! Kamu menang!")
+
+@timer
+def play_game():
+    sequence_length = random.randint(5, 10)  # Panjang urutan angka acak
+    sequence = generate_sequence(sequence_length)
+    print(f"Tebak angka pertama dari urutan yang terurut (panjang urutan: {sequence_length}):")
+    
+    def recursive_guess(attempts):
+        if attempts >= 3:
+            choice = input("Kamu sudah menebak 3 kali. Apakah kamu ingin menyerah atau lanjut? (ketik 'menyerah' atau 'lanjut'): ").strip().lower()
+            if choice == 'menyerah':
+                print(f"Jawaban yang benar adalah: {sequence[0]}")
+                print("Terima kasih sudah bermain!")
+                return
+            elif choice == 'lanjut':
+                clue_choice = input("Apakah kamu ingin petunjuk? (ketik 'ya' atau 'tidak'): ").strip().lower()
+                if clue_choice == 'ya':
+                    give_clue_with_math(sequence)
+            else:
+                print("Pilihan tidak valid. Silakan pilih 'menyerah' atau 'lanjut'.")
+                recursive_guess(attempts)  # Meminta pilihan lagi jika input tidak valid
+            attempts = 0  # Reset jumlah tebakan setelah pilihan
+
+        guess = int(input("Masukkan tebakanmu: "))
+        if validate_guess(guess, sequence):
+            print("Selamat! Kamu menang!")
+        else:
+            attempts += 1
+            print(f"Tebakanmu salah. Kamu sudah mencoba {attempts} kali.")
+            recursive_guess(attempts)  # Panggil lagi jika tebakan salah
+
+    recursive_guess(0)
+
+    replay = input("Apakah kamu ingin bermain lagi? (ketik 'ya' atau 'tidak'): ").strip().lower()
+    if replay == 'ya':
+        play_game()  # Memulai permainan baru jika memilih 'ya'
+    else:
+        print("Terima kasih sudah bermain!")
+
+if __name__ == "__main__":
+    play_game()
