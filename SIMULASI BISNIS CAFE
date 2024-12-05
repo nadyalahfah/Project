@@ -1,0 +1,91 @@
+import random
+import time
+
+ingredients = {
+    "coffee": 10,
+    "milk": 10,
+    "sugar": 10,
+    "chocolate": 5,
+    "whipped_cream": 3
+}
+
+menu = [
+    {"name": "Cappuccino", "ingredients": {"coffee": 2, "milk": 1, "sugar": 1}, "price": 5},
+    {"name": "Chocolate Latte", "ingredients": {"coffee": 2, "milk": 2, "chocolate": 2}, "price": 6},
+    {"name": "Espresso", "ingredients": {"coffee": 3}, "price": 4},
+    {"name": "Mocha", "ingredients": {"coffee": 2, "milk": 1, "chocolate": 1, "whipped_cream": 1}, "price": 7}
+]
+
+class Cafe:
+    def __init__(self):
+        self.total_earnings = 0
+        self.orders_served = 0
+
+    def check_inventory(self):
+        """Memeriksa persediaan bahan baku"""
+        print("\nPersediaan bahan baku:")
+        for item, quantity in ingredients.items():
+            print(f"{item.capitalize()}: {quantity} unit")
+    
+    def create_order(self):
+        """Membuat pesanan acak dari menu"""
+        menu_item = random.choice(menu)
+        print(f"\nPelanggan memesan: {menu_item['name']}")
+        
+        # Mengecek apakah bahan baku tersedia
+        for ingredient, quantity in menu_item["ingredients"].items():
+            if ingredients.get(ingredient, 0) < quantity:
+                print(f"Tidak cukup {ingredient}! Pesanan dibatalkan.")
+                return None
+        
+        for ingredient, quantity in menu_item["ingredients"].items():
+            ingredients[ingredient] -= quantity
+        
+        # Menambahkan total penghasilan
+        self.total_earnings += menu_item["price"]
+        self.orders_served += 1
+        print(f"Pesanan {menu_item['name']} selesai. Menghasilkan ${menu_item['price']}")
+
+    def restock_ingredients(self):
+        """Mengisi kembali bahan baku"""
+        print("\nMengisi kembali bahan baku...")
+        for ingredient in ingredients:
+            refill_amount = random.randint(3, 5)
+            ingredients[ingredient] += refill_amount
+            print(f"{ingredient.capitalize()} ditambahkan {refill_amount} unit.")
+    
+    def check_sales(self):
+        """Menampilkan total penjualan"""
+        print(f"\nTotal Penghasilan: ${self.total_earnings}")
+        print(f"Jumlah Pesanan yang Disajikan: {self.orders_served}")
+
+def main():
+    print("Selamat datang di Simulasi Bisnis Kafe!\n")
+    
+    cafe = Cafe()
+    
+    while True:
+        print("\nPilihan:")
+        print("1. Cek persediaan bahan baku")
+        print("2. Buat pesanan baru")
+        print("3. Mengisi kembali bahan baku")
+        print("4. Lihat total penjualan")
+        print("5. Keluar")
+        
+        choice = input("Masukkan pilihan (1/2/3/4/5): ")
+        
+        if choice == "1":
+            cafe.check_inventory()
+        elif choice == "2":
+            cafe.create_order()
+        elif choice == "3":
+            cafe.restock_ingredients()
+        elif choice == "4":
+            cafe.check_sales()
+        elif choice == "5":
+            print("Terima kasih telah bermain! Semoga bisnis kafemu sukses!")
+            break
+        else:
+            print("Pilihan tidak valid. Coba lagi.")
+
+main()
