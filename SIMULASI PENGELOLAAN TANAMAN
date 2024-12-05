@@ -1,0 +1,94 @@
+import random
+import time
+
+plants = [
+    {"name": "Pohon Apel", "growth_time": 5, "type": "tree", "water_needs": 3, "selling_price": 50},
+    {"name": "Bunga Mawar", "growth_time": 2, "type": "flower", "water_needs": 2, "selling_price": 30},
+    {"name": "Pohon Pinus", "growth_time": 7, "type": "tree", "water_needs": 4, "selling_price": 70},
+    {"name": "Bunga Daisy", "growth_time": 3, "type": "flower", "water_needs": 1, "selling_price": 25},
+    {"name": "Pohon Mangga", "growth_time": 6, "type": "tree", "water_needs": 5, "selling_price": 60},
+    {"name": "Bunga Tulip", "growth_time": 4, "type": "flower", "water_needs": 2, "selling_price": 40}
+]
+
+class Garden:
+    def __init__(self):
+        self.planted = []
+        self.total_earnings = 0
+
+    def plant_random(self):
+        """Menanam tanaman secara acak"""
+        plant = random.choice(plants)
+        self.planted.append({
+            "name": plant["name"],
+            "growth_time": plant["growth_time"],
+            "water_needs": plant["water_needs"],
+            "days_left": plant["growth_time"],
+            "status": "menumbuh",
+            "selling_price": plant["selling_price"]
+        })
+        print(f"Menanam {plant['name']} di taman!")
+    
+    def water_plants(self):
+        """Menyiram semua tanaman di taman"""
+        print("\nMenyiram tanaman...")
+        for plant in self.planted:
+            if plant["status"] == "menumbuh":
+                plant["days_left"] -= 1
+                if plant["days_left"] <= 0:
+                    plant["status"] = "berbuah" if plant["type"] == "tree" else "mekar"
+                    print(f"{plant['name']} telah {plant['status']}!")
+                else:
+                    print(f"{plant['name']} membutuhkan {plant['days_left']} hari lagi untuk tumbuh.")
+
+    def sell_plants(self):
+        """Menjual tanaman yang sudah siap untuk dijual"""
+        print("\nMenjual tanaman yang sudah siap...")
+        for plant in self.planted[:]:
+            if plant["status"] == "berbuah" or plant["status"] == "mekar":
+                print(f"{plant['name']} siap dijual dengan harga {plant['selling_price']}!")
+                self.total_earnings += plant["selling_price"]
+                self.planted.remove(plant)
+            else:
+                print(f"{plant['name']} belum siap dijual.")
+        
+        print(f"Total penghasilan dari penjualan tanaman: {self.total_earnings}")
+    
+    def check_garden(self):
+        """Memeriksa status taman"""
+        if not self.planted:
+            print("Taman kosong! Tanam beberapa tanaman terlebih dahulu.")
+        else:
+            print("\nStatus taman saat ini:")
+            for plant in self.planted:
+                print(f"{plant['name']} - Status: {plant['status']}, Sisa hari: {plant['days_left']}")
+
+def main():
+    print("Selamat datang di Simulasi Pengelolaan Taman!\n")
+    
+    garden = Garden()
+    
+    while True:
+        print("\nPilihan:")
+        print("1. Tanam tanaman acak")
+        print("2. Siram tanaman")
+        print("3. Periksa status taman")
+        print("4. Jual tanaman siap jual")
+        print("5. Keluar")
+        
+        choice = input("Masukkan pilihan (1/2/3/4/5): ")
+        
+        if choice == "1":
+            garden.plant_random()
+        elif choice == "2":
+            garden.water_plants()
+        elif choice == "3":
+            garden.check_garden()
+        elif choice == "4":
+            garden.sell_plants()
+        elif choice == "5":
+            print("Terima kasih telah bermain! Sampai jumpa di taman!")
+            break
+        else:
+            print("Pilihan tidak valid. Coba lagi.")
+
+main()
