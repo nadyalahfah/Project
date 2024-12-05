@@ -1,0 +1,61 @@
+import turtle
+import random
+
+screen = turtle.Screen()
+screen.bgcolor("black")
+screen.title("Pola Dinamis Keren")
+
+pen = turtle.Turtle()
+pen.shape("turtle")
+pen.speed(0)
+pen.width(2)
+
+colors = ["red", "blue", "green", "yellow", "purple", "orange", "cyan"]
+
+def draw_pattern():
+    for _ in range(36):  # Menggambar 36 segmen
+        pen.color(random.choice(colors))
+        pen.forward(100)
+        pen.left(45)
+        pen.forward(50)
+        pen.left(45)
+        pen.forward(100)
+        pen.left(120)
+
+def draw_spiral():
+    pen.up()
+    pen.goto(0, 0)
+    pen.down()
+    pen.setheading(0) 
+    for i in range(100):
+        pen.color(random.choice(colors))
+        pen.forward(i * 10)
+        pen.left(45)
+
+def draw_circle():
+    pen.up()
+    pen.goto(random.randint(-200, 200), random.randint(-200, 200))
+    pen.down()
+    pen.color(random.choice(colors))
+    pen.begin_fill()
+    pen.circle(random.randint(20, 100)) 
+    pen.end_fill()
+
+def main():
+    while True:
+        choice = screen.textinput("Pola Dinamis", "Pilih pola: (1) Spiral (2) Pola (3) Lingkaran (0) Keluar")
+        
+        if choice == "1":
+            draw_spiral()
+        elif choice == "2":
+            draw_pattern()
+        elif choice == "3":
+            draw_circle()
+        elif choice == "0":
+            break
+        else:
+            print("Pilihan tidak valid!")
+
+    turtle.done()
+
+main()
