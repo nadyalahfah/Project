@@ -1,0 +1,110 @@
+import random
+import time
+
+class Chicken:
+    def __init__(self, name):
+        self.name = name
+        self.is_healthy = True
+        self.eggs_produced = 0
+
+    def lay_eggs(self):
+        """Ayam bertelur jika sehat"""
+        if self.is_healthy:
+            self.eggs_produced += 1
+            return True
+        return False
+
+    def feed(self):
+        """Memberi makan ayam, membuat ayam lebih sehat"""
+        if not self.is_healthy:
+            self.is_healthy = True
+            print(f"{self.name} sekarang sehat kembali!")
+        else:
+            print(f"{self.name} sudah dalam kondisi sehat.")
+
+    def get_status(self):
+        """Menampilkan status ayam"""
+        health_status = "Sehat" if self.is_healthy else "Sakit"
+        return f"{self.name} - Status: {health_status}, Telur yang diproduksi: {self.eggs_produced}"
+
+class Farm:
+    def __init__(self):
+        self.chickens = []
+        self.total_earnings = 0
+
+    def add_chicken(self, name):
+        """Menambah ayam ke peternakan"""
+        chicken = Chicken(name)
+        self.chickens.append(chicken)
+        print(f"{name} telah ditambahkan ke peternakan!")
+
+    def feed_all_chickens(self):
+        """Memberi makan semua ayam"""
+        print("\nMemberi makan ayam-ayam...")
+        for chicken in self.chickens:
+            chicken.feed()
+
+    def collect_eggs(self):
+        """Mengumpulkan telur dari ayam yang sehat"""
+        print("\nMengumpulkan telur...")
+        eggs_collected = 0
+        for chicken in self.chickens:
+            if chicken.lay_eggs():
+                eggs_collected += 1
+        print(f"Total telur yang dikumpulkan: {eggs_collected}")
+
+        if eggs_collected > 0:
+            egg_price = 2  # Harga per telur
+            earnings = eggs_collected * egg_price
+            self.total_earnings += earnings
+            print(f"Penghasilan dari telur: ${earnings}")
+        else:
+            print("Tidak ada telur yang bisa dikumpulkan.")
+
+    def check_farm_status(self):
+        """Memeriksa status semua ayam di peternakan"""
+        if not self.chickens:
+            print("Peternakan kosong! Tambahkan ayam dulu.")
+        else:
+            print("\nStatus Ayam-ayam di Peternakan:")
+            for chicken in self.chickens:
+                print(chicken.get_status())
+    
+    def sell_eggs(self):
+        """Menjual telur untuk mendapatkan keuntungan"""
+        print(f"\nTotal penghasilan saat ini: ${self.total_earnings}")
+
+def main():
+    print("Selamat datang di Simulasi Peternakan Ayam!\n")
+    
+    farm = Farm()
+    
+    while True:
+        print("\nPilihan:")
+        print("1. Tambah ayam baru")
+        print("2. Beri makan ayam")
+        print("3. Kumpulkan telur")
+        print("4. Cek status peternakan")
+        print("5. Lihat total penghasilan")
+        print("6. Keluar")
+        
+        choice = input("Masukkan pilihan (1/2/3/4/5/6): ")
+        
+        if choice == "1":
+            name = input("Masukkan nama ayam: ")
+            farm.add_chicken(name)
+        elif choice == "2":
+            farm.feed_all_chickens()
+        elif choice == "3":
+            farm.collect_eggs()
+        elif choice == "4":
+            farm.check_farm_status()
+        elif choice == "5":
+            farm.sell_eggs()
+        elif choice == "6":
+            print("Terima kasih telah bermain! Semoga peternakan ayammu sukses!")
+            break
+        else:
+            print("Pilihan tidak valid. Coba lagi.")
+
+main()
